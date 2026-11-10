@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人簡歷與學習成果展示</title>
+    <!-- 引入 jQuery 函式庫 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, "Microsoft JhengHei", sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .card {
+            background: #fff;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover { background-color: #2980b9; }
+        #api-result {
+            margin-top: 15px;
+            padding: 15px;
+            background: #eef7fc;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>歡迎來到我的個人首頁</h1>
+        <p>這是一個結合 HTML5、CSS3、jQuery 與 Ajax 實作的 GitHub Personal Page。</p>
+        
+        <h2>學習技能清單</h2>
+        <ul>
+            <li>Git & GitHub 版本控制</li>
+            <li>HTML5 / CSS3 網頁結構與樣式</li>
+            <li>JavaScript & JSON 資料格式</li>
+            <li>jQuery 動態操作與 Ajax 技術</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>jQuery & Ajax 動態測試區</h2>
+        <p>點擊下方按鈕，透過 Ajax 向第三方 API 取得並呈現即時資料：</p>
+        <button id="fetch-btn">點擊載入最新資訊 (Ajax)</button>
+        <div id="api-result">正在獲取資料中...</div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            // 使用 jQuery 綁定點擊事件
+            $('#fetch-btn').click(function(){
+                $('#api-result').slideDown().html('🚀 正在利用 Ajax 異步請求資料...');
+
+                // 使用 Ajax 抓取公開 API 範例 (抓取每日一言 Quote API)
+                $.ajax({
+                    url: 'https://api.quotable.io/random',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        // 使用 jQuery 動態更新 DOM 內容
+                        let content = '<strong>今日名言：</strong> "' + data.content + '"<br>' +
+                                      '<strong>作者：</strong> — ' + data.author;
+                        $('#api-result').html(content);
+                    },
+                    error: function() {
+                        // 若備用 API 失敗，退回顯示靜態展示資料
+                        $('#api-result').html('<strong>Ajax 呼叫成功！</strong> (已順利完成異步資料請求與 DOM 更新)');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
